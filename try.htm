@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Website</title>
+    <script src="https://kit.fontawesome.com/YOUR_KIT_CODE.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="styless.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="logo" style="margin-left: 0; position: absolute; display: flex; flex-direction: row;">
+            <img src="./images/pngegg (1).png" width="50" height="50" alt="">
+            <h3 style="color: rgb(33, 139, 239); padding-top: 1.2rem;">NH</h3>
+        </div>
+
+        <div class="container">
+            <h1>Find Your Dream Home</h1>
+            <p>Explore the best properties to buy, rent, or sell in your area.</p>
+
+            <!-- Header Image -->
+            <div class="header-image"></div>
+
+            <!-- Explore Button -->
+            <a href="#explore" class="btn">Explore Now</a>
+        </div>
+
+        <!-- Login & Register & Admin Buttons -->
+        <div class="auth-buttons">
+            <a href="login.htm" class="btn login-btn">Login</a>
+            <a href="registration.htm" class="btn register-btn">Register</a>
+            <a href="admin.html" class="btn admin-btn">Admin</a>
+             <a href="userdash.html" class="btn dashboard-btn" id="dashboard-btn">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+              
+        </div>
+    </header>
+
+    <!-- CSS for Styling -->
+    <style>
+        .auth-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .auth-buttons .btn {
+            padding: 10px 15px;
+            margin-left: 10px;
+            text-decoration: none;
+            color: white;
+            background-color: rgb(33, 139, 239);
+            border-radius: 5px;
+        }
+
+        .auth-buttons .btn:hover {
+            background-color: rgb(25, 110, 190);
+        }
+        
+        .auth-buttons .admin-btn {
+            background-color: #ff5722;
+        }
+        
+        .auth-buttons .admin-btn:hover {
+            background-color: #e64a19;
+        }
+        
+        .like-icon.active {
+            color: red;
+        }
+    </style>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        
+            <ul>
+                <li class="dropdown">
+                    <a href="buypage.html" class="dropbtn">Buy</a> <!-- Changed from #buy to buy.html -->
+                    <div class="dropdown-content">
+                        <a href="#houses">Houses</a>
+                        <a href="#townhouses">Townhouses</a>
+                        <a href="#new-houses">New Houses</a>
+                        <a href="#lot-land">Lot/Land</a>
+                        <a href="#buying-options">Buying Options</a>
+                        <a href="#redfin-resources">Redfin Buying Resources</a>
+                    </div>
+                </li>
+                  
+
+                  </div>
+                </li>
+              
+                <li class="dropdown">
+                  <a href="#rent" class="dropbtn">Rent</a>
+                  <div class="dropdown-content">
+                    <a href="#">Apartments</a>
+                    <a href="#">Houses</a>
+                    <a href="#">Condos</a>
+                  </div>
+                </li>
+              
+                <li class="dropdown">
+                  <a href="sell.html" class="dropbtn">Sell</a>
+                  <div class="dropdown-content">
+                    <a href="#">List Property</a>
+                    <a href="#">Get Estimate</a>
+                    <a href="#">Find Buyers</a>
+                  </div>
+                </li>
+              
+                <li class="dropdown">
+                  <a href="#home-loans" class="dropbtn">Home Loans</a>
+                  <div class="dropdown-content">
+                    <a href="#">Mortgage Rates</a>
+                    <a href="#">Loan Calculator</a>
+                    <a href="#">Apply Now</a>
+                  </div>
+                </li>
+              
+                <li class="dropdown">
+                  <a href="#agent" class="dropbtn">Find an Agent</a>
+                  <div class="dropdown-content">
+                    <a href="#">Top Agents</a>
+                    <a href="#">Near Me</a>
+                    <a href="#">Reviews</a>
+                  </div>
+                </li>
+              
+                <li class="dropdown">
+                  <a href="#manage-rentals" class="dropbtn">Manage Rentals</a>
+                  <div class="dropdown-content">
+                    <a href="#">Tenant Screening</a>
+                    <a href="#">Rent Collection</a>
+                    <a href="#">Maintenance</a>
+                  </div>
+                </li>
+              </ul>
+              
+              <li class="dropdown">
+                <a href="#blog" class="dropbtn">Blog</a>
+                <div class="dropdown-content">
+                    <a href="#">Real Estate News</a>
+                    <a href="#">Market Trends</a>
+                    <a href="#">Home Buying Tips</a>
+                </div>
+            </li>
+
+            <li class="chatbot-icon">
+                <a href="#" id="chatbot-btn" onclick="toggleChatbot()">
+                    <i class="fas fa-robot"></i> <!-- Chatbot Icon -->
+                </a>
+            </li>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+   <!-- Highlight Section -->
+   <section class="highlight-section">
+    <div class="container">
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="location-input" placeholder="Enter location">
+            <button onclick="searchLocation()">Search</button>
+        </div>
+
+        <!-- Google Map Container -->
+        <div id="map" style="height: 500px; width: 100%;"></div>
+    </div>
+</section>
+
+<!-- Google Maps API Script -->
+<script>
+    let map;
+    let marker;
+
+    // Initialize the Google Map
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 37.7749, lng: -122.4194 }, // Default location: San Francisco
+            zoom: 12,
+        });
+
+        marker = new google.maps.Marker({
+            position: { lat: 37.7749, lng: -122.4194 },
+            map: map,
+        });
+
+        // Autocomplete feature for location input
+        let input = document.getElementById("location-input");
+        let autocomplete = new google.maps.places.Autocomplete(input);
+        
+        autocomplete.addListener("place_changed", function () {
+            let place = autocomplete.getPlace();
+            if (!place.geometry) return;
+
+            let location = place.geometry.location;
+            map.setCenter(location); // Set map center to selected location
+            marker.setPosition(location); // Update marker position
+        });
+    }
+
+    // Search for a location and update map center
+    function searchLocation() {
+        let location = document.getElementById("location-input").value;
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ address: location }, function (results, status) {
+            if (status === "OK") {
+                let latLng = results[0].geometry.location;
+                map.setCenter(latLng); // Center the map to the searched location
+                marker.setPosition(latLng); // Place a marker at the location
+            } else {
+                alert("Location not found!");
+            }
+        });
+    }
+</script>
+
+<!-- Google Maps API (Replace YOUR_API_KEY with your actual key) -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtlGn7PWrFAOVxK5ucMReVJqOJGGcu_SE&libraries=places&callback=initMap"></script>
+
+<!-- CSS for Map -->
+<style>
+    #map {
+        width: 100%;
+        height: 400px;
+        margin-top: 20px;
+        border-radius: 10px;
+    }
+</style>
+
+   
+            <!-- Featured Products -->
+<section class="featured-products">
+    <div class="container">
+        <h2>Featured Products</h2>
+<!-- First For Sale Row -->
+<div class="product-row">
+    <!-- Product Card -->
+    <div class="product-card">
+        <div class="image-container">
+            <img src="images/pexels-binyaminmellish-186077.jpg" alt="House">
+            <!-- For Sale Tag -->
+            <div class="property-tag for-sale">For Sale</div>
+            <!-- Like Icon -->
+            <i class="fas fa-heart like-icon" onclick="toggleLike(this, '1234 Elm Street, Springfield')"></i>
+        </div>
+        <div class="product-info">
+            <h3>Beautiful Family Home</h3>
+            <p><i class="fas fa-map-marker-alt"></i> 1234 Elm Street, Springfield</p>
+            <div class="details">
+                <span><i class="fas fa-bed"></i> 3 Beds</span>
+                <span><i class="fas fa-bath"></i> 2 Baths</span>
+                <span><i class="fas fa-ruler-combined"></i> 2,000 sqft</span>
+            </div>
+            <!-- Price Tag -->
+            <div class="price">
+                <i class="fas fa-tag"></i> $350,000
+            </div>
+        </div>
+    </div>
+
+    <!-- Another Product Card -->
+    <div class="product-card">
+        <div class="image-container">
+            <img src="images/pexels-expect-best-79873-323780.jpg" alt="House">
+            <!-- For Sale Tag -->
+            <div class="property-tag for-sale">For Sale</div>
+            <!-- Like Icon -->
+            <i class="fas fa-heart like-icon" onclick="toggleLike(this, '5678 Oak Avenue, Springfield')"></i>
+        </div>
+        <div class="product-info">
+            <h3>Modern Apartment</h3>
+            <p><i class="fas fa-map-marker-alt"></i> 5678 Oak Avenue, Springfield</p>
+            <div class="details">
+                <span><i class="fas fa-bed"></i> 2 Beds</span>
+                <span><i class="fas fa-bath"></i> 2 Baths</span>
+                <span><i class="fas fa-ruler-combined"></i> 1,500 sqft</span>
+            </div>
+            <!-- Price Tag -->
+            <div class="price">
+                <i class="fas fa-tag"></i> $250,000
+            </div>
+        </div>
+    </div>
+
+    <!-- Third Product Card -->
+    <div class="product-card">
+        <div class="image-container">
+            <img src="images/pexels-davidmcbee-1546166.jpg" alt="House">
+            <!-- For Sale Tag -->
+            <div class="property-tag for-sale">For Sale</div>
+            <!-- Like Icon -->
+            <i class="fas fa-heart like-icon" onclick="toggleLike(this, '910 Pine Drive, Springfield')"></i>
+        </div>
+        <div class="product-info">
+            <h3>Luxury Villa</h3>
+            <p><i class="fas fa-map-marker-alt"></i> 910 Pine Drive, Springfield</p>
+            <div class="details">
+                <span><i class="fas fa-bed"></i> 5 Beds</span>
+                <span><i class="fas fa-bath"></i> 4 Baths</span>
+                <span><i class="fas fa-ruler-combined"></i> 4,000 sqft</span>
+            </div>
+            <!-- Price Tag -->
+            <div class="price">
+                <i class="fas fa-tag"></i> $750,000
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- First For Rent Row -->
+<div class="product-row">
+    <div class="product-card">
+        <div class="image-container">
+            <img src="images/pexels-jovydas-2462015.jpg" alt="House for Rent">
+            <!-- For Rent Tag -->
+            <div class="property-tag for-rent">For Rent</div>
+            <i class="fas fa-heart like-icon" onclick="toggleLike(this, '345 Maple Street, Springfield')"></i>
+        </div>
+        <div class="product-info">
+            <h3>Cozy Apartment</h3>
+            <p><i class="fas fa-map-marker-alt"></i> 345 Maple Street, Springfield</p>
+            <div class="details">
+                <span><i class="fas fa-bed"></i> 1 Bed</span>
+                <span><i class="fas fa-bath"></i> 1 Bath</span>
+                <span><i class="fas fa-ruler-combined"></i> 800 sqft</span>
+            </div>
+            <div class="price">
+                <i class="fas fa-tag"></i> $1,200/month
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Rent Product Cards -->
+    <div class="product-card">
+        <div class="image-container">
+            <img src="images/pexels-pixabay-280222.jpg" alt="House for Rent">
+            <!-- For Rent Tag -->
+            <div class="property-tag for-rent">For Rent</div>
+            <i class="fas fa-heart like-icon" onclick="toggleLike(this, '678 Birch Lane, Springfield')"></i>
+        </div>
+        <div class="product-info">
+            <h3>Suburban Home</h3>
+            <p><i class="fas fa-map-marker-alt"></i> 678 Birch Lane, Springfield</p>
+            <div class="details">
+                <span><i class="fas fa-bed"></i> 3 Beds</span>
+                <span><i class="fas fa-bath"></i> 2 Baths</span>
+                <span><i class="fas fa-ruler-combined"></i> 1,800 sqft</span>
+            </div>
+            <div class="price">
+                <i class="fas fa-tag"></i> $2,500/month
+            </div>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <div class="image-container">
+            <img src="images/pexels-frans-van-heerden-201846-1438832.jpg" alt="House for Rent">
+            <!-- For Rent Tag -->
+            <div class="property-tag for-rent">For Rent</div>
+            <i class="fas fa-heart like-icon" onclick="toggleLike(this, '901 Walnut Street, Springfield')"></i>
+        </div>
+        <div class="product-info">
+            <h3>Downtown Condo</h3>
+            <p><i class="fas fa-map-marker-alt"></i> 901 Walnut Street, Springfield</p>
+            <div class="details">
+                <span><i class="fas fa-bed"></i> 2 Beds</span>
+                <span><i class="fas fa-bath"></i> 2 Baths</span>
+                <span><i class="fas fa-ruler-combined"></i> 1,200 sqft</span>
+            </div>
+            <div class="price">
+                <i class="fas fa-tag"></i> $1,800/month
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
+
+
+    
+<section id="explore" class="highlight-section">
+    <div class="container">
+        <div class="highlight-content">
+            <h2>Find Properties in These Cities</h2>
+            <p>Discover stunning luxury properties in prime locations. Your dream home awaits!</p>
+        </div>
+        <div class="highlight-images grid">
+            <div class="city-card">
+                <img src="images/miami.jpg" alt="Miami" class="highlight-image">
+                <div class="card-overlay">
+                    <h3>Miami</h3>
+                    <p>2 Properties</p>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="images/2.jpg" alt="Los Angeles" class="highlight-image">
+                <div class="card-overlay">
+                    <h3>Los Angeles</h3>
+                    <p>2 Properties</p>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="images/new york2.jpg" alt="New York" class="highlight-image">
+                <div class="card-overlay">
+                    <h3>New York</h3>
+                    <p>3 Properties</p>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="images/3.jpg" alt="Chicago" class="highlight-image">
+                <div class="card-overlay">
+                    <h3>Chicago</h3>
+                    <p>4 Properties</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+    
+
+   
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Real Estate Inc. All Rights Reserved.</p>
+                <div class="social-icons">
+                    <a href="#">Facebook</a>, 
+                    <a href="#">Twitter</a>, 
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Like and Admin Functionality Script -->
+    <script>
+        // Toggle like functionality
+        function toggleLike(icon, address) {
+            icon.classList.toggle('active');
+            
+            if (icon.classList.contains('active')) {
+                // Property is liked
+                console.log(`Liked property at: ${address}`);
+                // Here you would typically send this to a server or save in local storage
+                localStorage.setItem(`liked_${address}`, 'true');
+            } else {
+                // Property is unliked
+                console.log(`Unliked property at: ${address}`);
+                localStorage.removeItem(`liked_${address}`);
+            }
+        }
+        
+        // Check for liked properties on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeIcons = document.querySelectorAll('.like-icon');
+            
+            likeIcons.forEach(icon => {
+                const address = icon.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (localStorage.getItem(`liked_${address}`)) {
+                    icon.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
