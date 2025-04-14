@@ -31,7 +31,7 @@
         <!-- Login & Register & Admin Buttons -->
         <div class="auth-buttons">
             <a href="login.htm" class="btn login-btn">Login</a>
-            <a href="registration.htm" class="btn register-btn">Register</a>
+            <a href="registration.html" class="btn register-btn">Register</a>
             <a href="admin.html" class="btn admin-btn">Admin</a>
              <a href="userdash.html" class="btn dashboard-btn" id="dashboard-btn">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -158,82 +158,106 @@
         </ul>
     </nav>
 
-   <!-- Highlight Section -->
-   <section class="highlight-section">
+  <!-- Highlight Section -->
+<section class="highlight-section">
     <div class="container">
-        <!-- Search Bar -->
-        <div class="search-bar">
-            <input type="text" id="location-input" placeholder="Enter location">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d362.2693271432647!2d30.205883814165688!3d-17.353242014071178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2szw!4v1743882572030!5m2!1sen!2szw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <button onclick="searchLocation()">Search</button>
-        </div>
-
-<!--         <!-- Google Map Container -->
-        <div id="map" style="height: 500px; width: 100%;"></div>
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <input type="text" id="location-input" placeholder="Enter location">
+        <button onclick="searchLocation()">Search</button>
+      </div>
+  
+      <!-- Google Map Container -->
+      <div id="map"></div>
     </div>
-</section>
-
-<!-- Google Maps API Script -->
-<script>
+  </section>
+  
+  <!-- Google Maps Script -->
+  <script>
     let map;
     let marker;
-
-    // Initialize the Google Map
+  
     function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 37.7749, lng: -122.4194 }, // Default location: San Francisco
-            zoom: 12,
-        });
-
-        marker = new google.maps.Marker({
-            position: { lat: 37.7749, lng: -122.4194 },
-            map: map,
-        });
-
-        // Autocomplete feature for location input
-        let input = document.getElementById("location-input");
-        let autocomplete = new google.maps.places.Autocomplete(input);
-        
-        autocomplete.addListener("place_changed", function () {
-            let place = autocomplete.getPlace();
-            if (!place.geometry) return;
-
-            let location = place.geometry.location;
-            map.setCenter(location); // Set map center to selected location
-            marker.setPosition(location); // Update marker position
-        });
+      const defaultLocation = { lat: 37.7749, lng: -122.4194 }; // San Francisco
+  
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: defaultLocation,
+        zoom: 12,
+      });
+  
+      marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+      });
+  
+      const input = document.getElementById("location-input");
+      const autocomplete = new google.maps.places.Autocomplete(input);
+  
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) return;
+  
+        const location = place.geometry.location;
+        map.setCenter(location);
+        marker.setPosition(location);
+      });
     }
-
-    // Search for a location and update map center
+  
     function searchLocation() {
-        let location = document.getElementById("location-input").value;
-        let geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({ address: location }, function (results, status) {
-            if (status === "OK") {
-                let latLng = results[0].geometry.location;
-                map.setCenter(latLng); // Center the map to the searched location
-                marker.setPosition(latLng); // Place a marker at the location
-            } else {
-                alert("Location not found!");
-            }
-        });
+      const location = document.getElementById("location-input").value;
+      const geocoder = new google.maps.Geocoder();
+  
+      geocoder.geocode({ address: location }, (results, status) => {
+        if (status === "OK") {
+          const latLng = results[0].geometry.location;
+          map.setCenter(latLng);
+          marker.setPosition(latLng);
+        } else {
+          alert("Location not found!");
+        }
+      });
     }
-</script>
-
-<!-- Google Maps API (Replace YOUR_API_KEY with your actual key) -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtlGn7PWrFAOVxK5ucMReVJqOJGGcu_SE&libraries=places&callback=initMap"></script>
-
-<!-- CSS for Map -->
-<style>
+  </script>
+  
+  <!-- Google Maps API Script (Replace API key as needed) -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJkBTkfKP6uwi3nEefjb909K8K3HdLdLs&libraries=places&callback=initMap"></script>
+  
+  <!-- CSS for Map -->
+  <style>
     #map {
-        width: 100%;
-        height: 400px;
-        margin-top: 20px;
-        border-radius: 10px;
+      width: 100%;
+      height: 400px;
+      margin-top: 20px;
+      border-radius: 10px;
     }
-</style> -->
-
+  
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+  
+    .search-bar input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+  
+    .search-bar button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  
+    .search-bar button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  
    
             <!-- Featured Products -->
 <section class="featured-products">
@@ -252,7 +276,8 @@
         </div>
         <div class="product-info">
             <h3>Beautiful Family Home</h3>
-            <p><i class="fas fa-map-marker-alt"></i> 1234 Elm Street, Springfield</p>
+            <p>
+                <i class="fas fa-map-marker-alt"></i> 1234 Elm Street, Springfield</p>
             <div class="details">
                 <span><i class="fas fa-bed"></i> 3 Beds</span>
                 <span><i class="fas fa-bath"></i> 2 Baths</span>
